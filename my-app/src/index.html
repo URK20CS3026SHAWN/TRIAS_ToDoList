@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8">
+  <title>To-Do List</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+
+<body>
+  <h1>To Do List: A Good Way to Note</h1>
+  <app-root>
+
+    <div ng-app="myApp" ng-controller="myCtrl" 
+    ng-init="name='Task'; description='a'; deadline='2023-10-02'">
+      
+      <p>Task Name : <input type="text" ng-model="name"><br>
+        Description : <input type="text" ng-model="description"><br>
+        Deadline : <input type="date" ng-model="deadline">
+        <input type="submit" value="Add Task" ng-click="subtasks.push({name:name,description:description,deadline:deadline,completed:false,})">
+      </p>
+
+
+      <table style="text-align:center; ">
+        <tr>
+          <td>Status</td>
+          <td>Task Name</td>
+          <td>Task Description</td>
+          <td>Deadline</td>
+          
+        </tr>
+        <tr ng-repeat="t in subtasks">
+          <td ng-bind="t.completed"></td>
+          <td ng-bind="t.name"></td>
+          <td ng-bind="t.description"></td>
+          <td ng-bind="t.deadline"></td>
+          <td>
+            <button ng-click="openEditPopup(t)">Edit</button>
+            <button ng-click="confirmDeleteTask(t)">Delete</button> 
+          </td>
+        </tr>
+      </table>
+
+    </div>
+  </app-root>
+  
+  <script>
+    var app = angular.module('myApp',[]); //Define a application Module
+    app.controller('myCtrl',function($scope){ //Contains a Controller (MVC)
+      //$scope.name = "Task 1";
+      //$scope.description = "Task 1 Description";
+      //$scope.completed = false;
+      $scope.subtasks = [
+        {name:'Jani',description:'Norway', deadline:1 ,completed: false},
+      ];
+      
+      
+      $scope.editTask = function(task) {
+        task.name = prompt("Task Name", task.name);
+        task.description = prompt("Task Description", task.description);
+        task.deadline = prompt("Task Deadline", task.deadline);
+      };
+
+      $scope.openEditPopup = function(task) {
+        $scope.editTask(task);
+      };
+
+
+
+      $scope.confirmDeleteTask = function(task) {
+        if (confirm("Are you sure you want to delete this task?")) {
+          $scope.deleteTask(task);
+        }
+      };
+      
+      $scope.deleteTask = function(task) {
+        var index = $scope.subtasks.indexOf(task);
+        $scope.subtasks.splice(index, 1);
+      };
+      
+    });
+  </script>
+
+</body>
+</html>
+
+
+<!-- <div id="editTaskPopup" class="popup">
+  <h2>Edit Task</h2>
+  <label for="editName">Task Name:</label>
+  <input type="text" id="editName" ng-model="editTask.name">
+  <label for="editDescription">Description:</label>
+  <input type="text" id="editDescription" ng-model="editTask.description">
+  <label for="editDeadline">Deadline:</label>
+  <input type="date" id="editDeadline" ng-model="editTask.deadline">
+  <label for="editCompleted">Completed:</label>
+  <input type="checkbox" id="editCompleted" ng-model="editTask.completed">
+  <button ng-click="saveEditedTask()">Save</button>
+  <button ng-click="closeEditPopup()">Close</button>
+</div>
+
+<style>
+  /* Styles for the edit task pop-up */
+  .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    width: 300px;
+    text-align: center;
+  }
+
+  .popup h2 {
+    margin: 0;
+  }
+
+  .popup label {
+    display: block;
+    margin-top: 10px;
+  }
+
+  .popup input[type="text"],
+  .popup input[type="date"] {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+  }
+
+  .popup input[type="checkbox"] {
+    margin-top: 10px;
+  }
+
+  .popup button {
+    margin-top: 15px;
+    padding: 5px 10px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
+  .popup button:hover {
+    background: #0056b3;
+  }
+</style> 
+
+</body>
+</html>  -->
+
+
